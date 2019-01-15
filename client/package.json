@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "http-proxy-middleware": "^0.19.1",
+    "moment": "^2.23.0",
     "react": "^16.7.0",
+    "react-bootstrap": "^0.32.4",
+    "react-charts": "^2.0.0-alpha.12",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
     "react-scripts": "2.1.3",
