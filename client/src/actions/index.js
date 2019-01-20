@@ -30,12 +30,27 @@ export function water() {
 export function fetchHistory() {
     let moistureData = [];
     let waterData = [];
-    let x = 32;
-    for (let i = 0; i < 30; i++) {
-        moistureData.push({
-            value: Math.floor(Math.random() * 100),
-            readDate: moment().format('M/D/YY, h:mm:ss a').subtract(x--, 'days'),
-        });
+    // let x = 32;
+    // for (let i = 0; i < 30; i++) {
+    //     moistureData.push({
+    //         value: Math.floor(Math.random() * 100),
+    //         readDate: moment().format('M/D/YY, h:mm:ss a').subtract(x--, 'days'),
+    //     });
+    // }
+
+    let x = 5000000000;
+    for (let i = 0; i < 20; i++) {
+        let t = moment().valueOf() - x;
+        let val = Math.floor(Math.random() * 100);
+        moistureData.push({ readDate: t, value: val});
+        x -= Math.floor(Math.random() * 100000000);
+    }
+
+    x = 5000000000;
+    for (let i = 0; i < 10; i++) {
+        let t = moment().valueOf() - x;
+        waterData.push(moment(t));
+        x -= Math.floor(Math.random() * 200000000);
     }
 
     return {

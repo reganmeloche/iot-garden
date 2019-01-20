@@ -2,11 +2,17 @@ import {
     FETCH_HISTORY
 } from '../actions/index';
 
-export default function(state = null, action) {
+const defaultData = {
+    moistureData: [],
+    waterData: [],
+};
+
+export default function(state = defaultData, action) {
     let result = state;
 
     switch (action.type) {
         case FETCH_HISTORY:
+            
             result = action.payload;     
             break;
         default:
