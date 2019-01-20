@@ -49,6 +49,7 @@ export function water() {
     const data = {
         waterDate: moment().format('M/D/YY, h:mm:ss a'),
     };
+    axios.post('/api/water', {});
 
     return {
         type: WATER,
