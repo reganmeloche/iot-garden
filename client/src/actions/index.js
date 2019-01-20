@@ -1,8 +1,37 @@
 import moment from 'moment';
+import axios from 'axios';
+
+export const LOGIN = 'login';
+export const FETCH_USER = 'fetch_user';
+export const LOGOUT = 'logout';
 
 export const READ_MOISTURE = 'read_moisture';
 export const WATER = 'water';
 export const FETCH_HISTORY = 'fetch_history';
+
+export function login(password) {
+    const request = axios.post('/api/login', { username: 'bob', password: password.text })
+    return {
+        type: LOGIN,
+        payload: request,
+    };
+}
+
+export function fetchUser() {
+    const request = axios.get('/api/fetch_user');
+    return {
+        type: FETCH_USER,
+        payload: request,
+    };
+}
+
+export function logout() {
+    const request = axios.get('/api/logout');
+    return {
+        type: LOGOUT,
+        payload: request,
+    };
+}
 
 export function readMoisture() {
     const data = {
@@ -30,13 +59,6 @@ export function water() {
 export function fetchHistory() {
     let moistureData = [];
     let waterData = [];
-    // let x = 32;
-    // for (let i = 0; i < 30; i++) {
-    //     moistureData.push({
-    //         value: Math.floor(Math.random() * 100),
-    //         readDate: moment().format('M/D/YY, h:mm:ss a').subtract(x--, 'days'),
-    //     });
-    // }
 
     let x = 5000000000;
     for (let i = 0; i < 20; i++) {
@@ -61,3 +83,4 @@ export function fetchHistory() {
         },
     };
 }
+

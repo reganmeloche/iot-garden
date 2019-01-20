@@ -5,10 +5,6 @@ import { connect } from 'react-redux';
 import { readMoisture, water, } from '../actions/index';
 
 class Control extends Component {
-    constructor(props){
-        super(props);
-    }
-
     handleReadMoisture = () => {
         this.props.onReadMoisture();
     }

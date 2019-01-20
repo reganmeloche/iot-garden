@@ -1,6 +1,10 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
+const keys = require('./config/keys');
 
 // Other setup
 const bodyParser = require('body-parser');
@@ -9,6 +13,12 @@ const app = express();
 app.set('port', (process.env.PORT || 9107));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Auth stuff
+require('./src/passport');
+app.use(session({ secret: keys.sessionSecret, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 require('./src/control')(app);

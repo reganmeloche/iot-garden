@@ -15,8 +15,6 @@ import {
     ScatterChart,
 } from "react-timeseries-charts";
 
-const moment = require('moment');
-
 // Pond: http://software.es.net/pond/#/
 // charts: http://software.es.net/react-timeseries-charts/#/
 
@@ -24,10 +22,6 @@ class Metrics extends Component {
     state = {
         highlight: null,
     };
-
-    constructor(props){
-        super(props);
-    }
 
     componentDidMount() {
         this.props.fetchHistory();
@@ -64,7 +58,7 @@ class Metrics extends Component {
     }
 
     render() {
-        if (this.props.moistureData.length == 0 || this.props.waterData.length == 0) {
+        if (this.props.moistureData.length === 0 || this.props.waterData.length === 0) {
             return (<div>No data to show</div>);
         }
 
@@ -90,7 +84,7 @@ class Metrics extends Component {
                                         axis="axis1"
                                         series={waterTS}
                                         columns={["value"]}
-                                        info={'Watered!'}
+                                        info={[{val: 'Watered!'}]}
                                         infoHeight={28}
                                         infoWidth={110}
                                         infoStyle={{
