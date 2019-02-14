@@ -3,17 +3,20 @@ const Moisture = mongoose.model('moisture');
 const moment = require('moment');
 
 module.exports = {
-  fetch: function() {
+  // TODO: May want to move some logic to the front-end
+  fetch: function(max = 20) {
     return Moisture.find({}).then((mongoResult) => {
-      var x = mongoResult.map(x => {
+      var results = mongoResult.map(reading => {
           return {
-              value: x.text,
-              date: x.date,
+              value: reading.value,
+              date: reading.date,
           };
       }).sort((x, y) => { 
         return new Date(y.date) - new Date(x.date);
-      });
-      return x;
+      }).slice(0, max)
+      .reverse();
+      
+      return results;
     });
   },
 

@@ -5,6 +5,9 @@ const keys = require('../config/keys');
 const SUBSCRIBE_TOPIC = 'device_call';
 const PUBLISH_TOPIC = 'web_call';
 
+const MoistureLib = require('./lib/moisture');
+const WaterLib = require('./lib/water');
+
 // TODO: Start this separately and attach to the app?
 const client = mqtt.connect(keys.mqttUrl);
 
@@ -14,7 +17,32 @@ module.exports = function (app) {
     app.post('/api/water', (req, res) => {
         console.log(`Watering...`);
         const message = `WW`;
+        client.publish(PUBLISH_TOPIC, message);
+        WaterLib.save().then(() => {
+            res.status(201).send({ status: 'done' });
+        })
+    });
 
+    app.get('/api/moisture', (req, res) => {
+        console.log('Fetching Moisture Data...');
+        const count = req.query.count;
+        MoistureLib.fetch(count).then(history => {
+            res.status(200).send({ history });
+        });
+    });
+
+    app.get('/api/water', (req, res) => {
+        console.log('Fetching Water Data...');
+        const count = req.query.count;
+        WaterLib.fetch(count).then(history => {
+            res.status(200).send({ history });
+        });
+    });
+
+    // TODO: Change to moisture_read
+    app.post('/api/moisture', (req, res) => {
+        console.log(`Forcing Moisture Read...`);
+        const message = `RM`;
         client.publish(PUBLISH_TOPIC, message);
         res.status(201).send({ status: 'done' });
     });
@@ -32,17 +60,12 @@ module.exports = function (app) {
     client.on('message', function (topic, message) {                    
         const msg = message.toString();
         console.log('Received message: ', msg);
-        if (msg[0] === 'T') {
-            readValues.temp = {
-                value: parseFloat(msg.slice(1)).toString(),
-                date: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        if (msg[0] === 'M') {
+            const moistureValue = parseFloat(msg.slice(1).toString().split(',')[1]);
+            const model = {
+                value: moistureValue,
             };
-        }
-        if (msg[0] === 'L') {
-            readValues.light = (msg[1] === '1');
-        }
-        if (msg[0] === 'S') {
-            readValues.status.value = true;
+            MoistureLib.save(model);
         }
     });
 

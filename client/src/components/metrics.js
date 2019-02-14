@@ -35,7 +35,7 @@ class Metrics extends Component {
 
     buildMoistureTS = () => {
         const points = this.props.moistureData.map(x => {
-            return [ new Date(x.readDate), x.value ];
+            return [ new Date(x.date), x.value ];
         });
 
         return new TimeSeries({
@@ -47,7 +47,7 @@ class Metrics extends Component {
 
     buildWaterTS = (ts) => {
         const points = this.props.waterData.map(x => {
-            return [ x, 0 ];
+            return [ new Date(x.date), 200 ];
         })
 
         return new TimeSeries({
@@ -57,17 +57,29 @@ class Metrics extends Component {
         });
     }
 
+    getChartRange() {
+        const firstMoisture = new Date(this.props.moistureData[0].date);
+        const firstWater = new Date(this.props.waterData[0].date);
+        const begin = Math.min(firstMoisture, firstWater);
+        
+        const lastMoisture = new Date(this.props.moistureData[this.props.moistureData.length - 1].date);
+        const lastWater = new Date(this.props.waterData[this.props.waterData.length - 1].date);
+        const end = Math.max(lastMoisture, lastWater);
+
+        return new TimeRange(begin, end);
+    }
+
     render() {
-        if (this.props.moistureData.length === 0 || this.props.waterData.length === 0) {
+        if (this.props.moistureData.length === 0) {
             return (<div>No data to show</div>);
         }
 
         const moistureTS = this.buildMoistureTS();
         const waterTS = this.buildWaterTS();
-        
-        var begin = this.props.moistureData[0].readDate;
-        var end = this.props.moistureData[this.props.moistureData.length - 1].readDate;
-        var rng = new TimeRange(begin, end);
+        const rng = this.getChartRange();
+
+        const minMoisture = 200;
+        const maxMoisture = 1200;
 
         return (
             <Panel>
@@ -76,7 +88,7 @@ class Metrics extends Component {
                     <Resizable>
                         <ChartContainer timeRange={rng}>
                             <ChartRow height="200">
-                                <YAxis id="axis1" label="Moisture" min={0} max={100} width="60" type="linear"/>
+                                <YAxis id="axis1" label="Moisture" min={minMoisture} max={maxMoisture} width="60" type="linear"/>
                                 <Charts>
                                     <LineChart axis="axis1" series={moistureTS} column={["aud"]}/>
                                     
@@ -109,8 +121,8 @@ class Metrics extends Component {
 
 const mapStateToProps = state => {
     return {
-        moistureData: state.history.moistureData,
-        waterData: state.history.waterData,
+        moistureData: state.moistureData,
+        waterData: state.waterData,
     }
 }
 

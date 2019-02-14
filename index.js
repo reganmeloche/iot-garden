@@ -6,6 +6,10 @@ const passport = require('passport');
 const session = require('express-session');
 const keys = require('./config/keys');
 
+// DB Stuff
+require('./src/models');
+mongoose.connect(keys.mongoUri);
+
 // Other setup
 const bodyParser = require('body-parser');
 const app = express();

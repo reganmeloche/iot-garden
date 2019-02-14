@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { Component } from 'react';
 import { Glyphicon, Button, Panel } from 'react-bootstrap';
 
@@ -65,13 +66,13 @@ const mapStateToProps = state => {
     let moistureDate = "--";
     let waterDate = "--";
 
-    if (state.moisture) {
-        moistureValue = state.moisture.value;
-        moistureDate = state.moisture.readDate;
+    if (state.lastMoisture) {
+        moistureValue = state.lastMoisture.value;
+        moistureDate = moment(state.lastMoisture.date).format('M/D/YYYY, h:mm:ss a');
     }
 
-    if (state.water) {
-        waterDate = state.water.waterDate;
+    if (state.lastWater) {
+        waterDate = moment(state.lastWater.date).format('M/D/YYYY, h:mm:ss a');
     }
 
     return {

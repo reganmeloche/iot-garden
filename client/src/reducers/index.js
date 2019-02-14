@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux';
 
 import loginReducer from './loginReducer';
-import moistureReducer from './moistureReducer';
-import waterReducer from './waterReducer';
-import historyReducer from './historyReducer';
+import lastMoistureReducer from './lastMoistureReducer';
+import lastWaterReducer from './lastWaterReducer';
+import moistureDataReducer from './moistureDataReducer';
+import waterDataReducer from './waterDataReducer';
+
 
 export default combineReducers({
     loggedIn: loginReducer,
-    moisture: moistureReducer,
-    water: waterReducer,
-    history: historyReducer,
+    lastMoisture: lastMoistureReducer,
+    lastWater: lastWaterReducer,
+    moistureData: moistureDataReducer,
+    waterData: waterDataReducer,
 });

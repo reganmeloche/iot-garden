@@ -10,34 +10,49 @@ export const WATER = 'water';
 export const FETCH_HISTORY = 'fetch_history';
 
 export function login(password) {
-    const request = axios.post('/api/login', { username: 'bob', password: password.text })
-    return {
-        type: LOGIN,
-        payload: request,
-    };
+    return dispatch => {
+        const url = '/api/login';
+        const data = { username: 'bob', password: password.text };
+        axios.post(url, data).then(payload => {
+            dispatch({
+                type: LOGIN,
+                payload,
+            });
+        })
+    }
 }
 
 export function fetchUser() {
-    const request = axios.get('/api/fetch_user');
-    return {
-        type: FETCH_USER,
-        payload: request,
-    };
+    return dispatch => {
+        const url = '/api/fetch_user';
+        axios.get(url).then(payload => {
+            dispatch({
+                type: FETCH_USER,
+                payload,
+            });
+        });
+    }
 }
 
 export function logout() {
-    const request = axios.get('/api/logout');
-    return {
-        type: LOGOUT,
-        payload: request,
-    };
+    return dispatch => {
+        const url = '/api/logout';
+        axios.get(url).then(payload => {
+            dispatch({
+                type: LOGOUT,
+                payload,
+            })
+        })
+    }
 }
 
+// TODO: Changing this
 export function readMoisture() {
     const data = {
         value: Math.floor(Math.random() * 100),
         readDate: moment().format('M/D/YY, h:mm:ss a'),
     };
+    axios.post('/api/moisture', {});
     
     return {
         type: READ_MOISTURE,
@@ -46,42 +61,29 @@ export function readMoisture() {
 }
 
 export function water() {
-    const data = {
-        waterDate: moment().format('M/D/YY, h:mm:ss a'),
-    };
-    axios.post('/api/water', {});
-
-    return {
-        type: WATER,
-        payload: data,
-    };
+    return dispatch => {
+        const url = '/api/water';
+        const data = {}; 
+        axios.post(url, data).then(() => {
+            dispatch({ type: WATER });
+        });
+    }
+    
 }
 
 export function fetchHistory() {
-    let moistureData = [];
-    let waterData = [];
-
-    let x = 5000000000;
-    for (let i = 0; i < 20; i++) {
-        let t = moment().valueOf() - x;
-        let val = Math.floor(Math.random() * 100);
-        moistureData.push({ readDate: t, value: val});
-        x -= Math.floor(Math.random() * 100000000);
+    return dispatch => {
+        const urlM = '/api/moisture?count=60';
+        axios.get(urlM).then(moistureRes => {
+            const urlW = '/api/water?count=5';
+            axios.get(urlW).then(waterRes => {
+                dispatch({
+                    type: FETCH_HISTORY,
+                    payload: { moistureRes, waterRes },
+                })
+            })
+        })
     }
-
-    x = 5000000000;
-    for (let i = 0; i < 10; i++) {
-        let t = moment().valueOf() - x;
-        waterData.push(moment(t));
-        x -= Math.floor(Math.random() * 200000000);
-    }
-
-    return {
-        type: FETCH_HISTORY,
-        payload: {
-            moistureData,
-            waterData
-        },
-    };
 }
+
 
