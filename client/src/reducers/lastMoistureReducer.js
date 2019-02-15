@@ -1,5 +1,4 @@
 import { 
-    READ_MOISTURE,
     FETCH_HISTORY,
 } from '../actions/index';
 
@@ -12,9 +11,6 @@ export default function(state = null, action) {
                 const md = action.payload.moistureRes.data.history;
                 result = md[md.length - 1];
             }
-            break;
-        case READ_MOISTURE:
-            result = action.payload;     
             break;
         default:
             break;

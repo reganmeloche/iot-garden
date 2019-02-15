@@ -14,15 +14,6 @@ const client = mqtt.connect(keys.mqttUrl);
 module.exports = function (app) {
 
     /*** Functions ***/
-    app.post('/api/water', (req, res) => {
-        console.log(`Watering...`);
-        const message = `WW`;
-        client.publish(PUBLISH_TOPIC, message);
-        WaterLib.save().then(() => {
-            res.status(201).send({ status: 'done' });
-        })
-    });
-
     app.get('/api/moisture', (req, res) => {
         console.log('Fetching Moisture Data...');
         const count = req.query.count;
@@ -39,7 +30,6 @@ module.exports = function (app) {
         });
     });
 
-    // TODO: Change to moisture_read
     app.post('/api/moisture', (req, res) => {
         console.log(`Forcing Moisture Read...`);
         const message = `RM`;
@@ -47,6 +37,14 @@ module.exports = function (app) {
         res.status(201).send({ status: 'done' });
     });
 
+    app.post('/api/water', (req, res) => {
+        console.log(`Watering...`);
+        const message = `WW`;
+        client.publish(PUBLISH_TOPIC, message);
+        WaterLib.save().then(() => {
+            res.status(201).send({ status: 'done' });
+        })
+    });
 
     /*** MQTT ***/
     client.on('connect', function () {

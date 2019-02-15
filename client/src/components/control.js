@@ -1,7 +1,6 @@
 import moment from 'moment';
 import React, { Component } from 'react';
 import { Glyphicon, Button, Panel } from 'react-bootstrap';
-
 import { connect } from 'react-redux';
 import { readMoisture, water, } from '../actions/index';
 
@@ -26,9 +25,9 @@ class Control extends Component {
                         <span className="info-value">
                             {this.props.moistureValue}
                         </span>
-                        <a href="#" onClick={this.handleReadMoisture}>
+                        <Button disabled={this.props.isLoading} bsSize="small" bsStyle="info" onClick={this.handleReadMoisture}>
                             <Glyphicon glyph="glyphicon glyphicon-refresh" />
-                        </a>
+                        </Button>
                     </div>
 
                     <div className="info-line">
@@ -50,18 +49,15 @@ class Control extends Component {
                     </div>
 
                     <div className="info-line">
-                        <Button bsSize="large" bsStyle="info" onClick={this.handleWater}>Water</Button>
+                        <Button disabled={this.props.isLoading} bsSize="large" bsStyle="info" onClick={this.handleWater}>Water</Button>
                     </div>
                 </Panel.Body>
             </Panel>
         );
     }
-
 }
 
-
 const mapStateToProps = state => {
-
     let moistureValue = "--";
     let moistureDate = "--";
     let waterDate = "--";
@@ -79,6 +75,7 @@ const mapStateToProps = state => {
         moistureValue,
         moistureDate,
         waterDate,
+        isLoading: state.isLoading,
     }
 }
 

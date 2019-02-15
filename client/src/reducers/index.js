@@ -5,7 +5,7 @@ import lastMoistureReducer from './lastMoistureReducer';
 import lastWaterReducer from './lastWaterReducer';
 import moistureDataReducer from './moistureDataReducer';
 import waterDataReducer from './waterDataReducer';
-
+import loadingReducer from './loadingReducer';
 
 export default combineReducers({
     loggedIn: loginReducer,
@@ -13,4 +13,5 @@ export default combineReducers({
     lastWater: lastWaterReducer,
     moistureData: moistureDataReducer,
     waterData: waterDataReducer,
+    isLoading: loadingReducer,
 });
