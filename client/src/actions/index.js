@@ -8,12 +8,15 @@ export const READ_MOISTURE = 'read_moisture';
 export const WATER = 'water';
 export const FETCH_HISTORY = 'fetch_history';
 
-const delayMs = 1000;
+const DELAY_MS = 1000;
+const MOISTURE_COUNT = 20;
+const WATER_COUNT = 5;
 
+/*** Registration ***/
 export function login(password) {
     return dispatch => {
         const url = '/api/login';
-        const data = { username: 'bob', password: password.text };
+        const data = { username: 'user', password: password.text };
         axios.post(url, data).then(payload => {
             dispatch({
                 type: LOGIN,
@@ -47,6 +50,7 @@ export function logout() {
     }
 }
 
+/*** Main Actions ***/
 export function readMoisture() {
     return dispatch => {
         const url = '/api/moisture';
@@ -57,7 +61,7 @@ export function readMoisture() {
             setTimeout(() => {
                 dispatch(fetchHistory());
                 dispatch(setLoading(false));     
-            }, delayMs);
+            }, DELAY_MS);
             
         });
     } 
@@ -81,9 +85,9 @@ export function water(milliseconds) {
 
 export function fetchHistory() {
     return dispatch => {
-        const urlM = '/api/moisture?count=50';
+        const urlM = `/api/moisture?count=${MOISTURE_COUNT}`;
         axios.get(urlM).then(moistureRes => {
-            const urlW = '/api/water?count=10';
+            const urlW = `/api/water?count=${WATER_COUNT}`;
             axios.get(urlW).then(waterRes => {
                 dispatch({
                     type: FETCH_HISTORY,
@@ -93,6 +97,8 @@ export function fetchHistory() {
         })
     }
 }
+
+/*** Helpers ***/
 
 function setLoading(isLoading) {
     return {

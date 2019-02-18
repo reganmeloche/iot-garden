@@ -7,6 +7,7 @@ const moistureSchema = new Schema({
 });
 
 const waterSchema = new Schema({
+    ms: Number,
     date: Date,
 });
 

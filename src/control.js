@@ -13,7 +13,7 @@ const client = mqtt.connect(keys.mqttUrl);
 
 module.exports = function (app) {
 
-    /*** Functions ***/
+    /*** Main Functions ***/
     app.get('/api/moisture', (req, res) => {
         console.log('Fetching Moisture Data...');
         const count = req.query.count;
@@ -51,9 +51,9 @@ module.exports = function (app) {
     /*** MQTT ***/
     client.on('connect', function () {
         client.subscribe(SUBSCRIBE_TOPIC, function (err) {
-        if (err) {
-            console.log('ERR', err);
-        }
+            if (err) {
+                console.log('ERROR: ', err);
+            }
         });
     });
 
@@ -72,7 +72,6 @@ module.exports = function (app) {
     /*** AUTH ***/
     app.post('/api/login', passport.authenticate('local', {
         failureRedirect: '/',
-        // failureFlash: true,
     }),
     (req, res) => { res.status(200).send(req.user); },
     );

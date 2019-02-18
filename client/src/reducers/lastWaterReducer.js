@@ -2,8 +2,6 @@ import {
     FETCH_HISTORY
 } from '../actions/index';
 
-
-
 export default function(state = null, action) {
     let result = state;
 
