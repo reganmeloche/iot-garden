@@ -18,7 +18,7 @@ module.exports = {
   },
 
   save: function(water) {
-    return new Water({ date: moment()}).save()
+    return new Water({ ms: water.ms, date: moment()}).save()
       .then(() => { 
         return {
           done: true,

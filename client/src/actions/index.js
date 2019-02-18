@@ -63,17 +63,17 @@ export function readMoisture() {
     } 
 }
 
-export function water() {
+export function water(milliseconds) {
     return dispatch => {
         const url = '/api/water';
-        const data = {};
+        const data = { ms: milliseconds };
         dispatch(setLoading(true));
         axios.post(url, data).then(() => {
             dispatch({ type: WATER });
             setTimeout(() => {
                 dispatch(fetchHistory());
                 dispatch(setLoading(false));     
-            }, delayMs);
+            }, milliseconds);
             
         });
     } 
@@ -81,9 +81,9 @@ export function water() {
 
 export function fetchHistory() {
     return dispatch => {
-        const urlM = '/api/moisture?count=20';
+        const urlM = '/api/moisture?count=50';
         axios.get(urlM).then(moistureRes => {
-            const urlW = '/api/water?count=5';
+            const urlW = '/api/water?count=10';
             axios.get(urlW).then(waterRes => {
                 dispatch({
                     type: FETCH_HISTORY,

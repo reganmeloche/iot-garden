@@ -39,9 +39,11 @@ module.exports = function (app) {
 
     app.post('/api/water', (req, res) => {
         console.log(`Watering...`);
-        const message = `WW`;
+        const ms = Math.min(req.body.ms, 20000);
+        const message = `WW${ms}`;
+        const model = { ms };
         client.publish(PUBLISH_TOPIC, message);
-        WaterLib.save().then(() => {
+        WaterLib.save(model).then(() => {
             res.status(201).send({ status: 'done' });
         })
     });

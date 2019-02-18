@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { Component } from 'react';
-import { Glyphicon, Button, Panel } from 'react-bootstrap';
+import { Glyphicon, Button, Panel, FormGroup, InputGroup, } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { readMoisture, water, } from '../actions/index';
 
@@ -10,7 +10,10 @@ class Control extends Component {
     }
 
     handleWater = () => {
-        this.props.onWater();
+        const value = parseInt(this.refs.water_secs.value);
+        if (value >= 5 && value <= 15) {
+            this.props.onWater(value * 1000);    
+        }
     }
 
     render() {
@@ -49,7 +52,15 @@ class Control extends Component {
                     </div>
 
                     <div className="info-line">
-                        <Button disabled={this.props.isLoading} bsSize="large" bsStyle="info" onClick={this.handleWater}>Water</Button>
+                        <FormGroup>
+                            <InputGroup>
+                                <InputGroup.Addon>Water time (sec)</InputGroup.Addon>
+                                    <input placeholder="5 - 15" className="form-control" type="text" ref="water_secs" maxLength="2"/>
+                                <InputGroup.Button>
+                                    <Button disabled={this.props.isLoading} bsStyle="info" onClick={this.handleWater}>Water</Button>
+                                </InputGroup.Button>
+                            </InputGroup>
+                        </FormGroup>
                     </div>
                 </Panel.Body>
             </Panel>
@@ -82,7 +93,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onReadMoisture: () => dispatch(readMoisture()),
-        onWater: () => dispatch(water()),
+        onWater: (ms) => dispatch(water(ms)),
     };
 }
 

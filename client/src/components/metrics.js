@@ -96,7 +96,7 @@ class Metrics extends Component {
                                         axis="axis1"
                                         series={waterTS}
                                         columns={["value"]}
-                                        info={[{val: 'Watered!'}]}
+                                        info={[{ label: "Action", value: "Watered" }]}
                                         infoHeight={28}
                                         infoWidth={110}
                                         infoStyle={{
