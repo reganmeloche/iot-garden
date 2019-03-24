@@ -1,16 +1,17 @@
 import axios from 'axios';
 
 export const LOGIN = 'login';
+export const FETCH_UNITS = 'fetch_units';
 export const FETCH_USER = 'fetch_user';
 export const LOGOUT = 'logout';
 export const SET_LOADING = 'set_loading';
-export const READ_MOISTURE = 'read_moisture';
-export const WATER = 'water';
 export const FETCH_HISTORY = 'fetch_history';
 
 const DELAY_MS = 1000;
 const MOISTURE_COUNT = 20;
 const WATER_COUNT = 5;
+
+// TODO: Break into separate files
 
 /*** Registration ***/
 export function login(password) {
@@ -51,15 +52,46 @@ export function logout() {
 }
 
 /*** Main Actions ***/
-export function readMoisture() {
+export function createUnit(model) {
     return dispatch => {
-        const url = '/api/moisture';
+        const url = `/api/unit/`;
+        axios.post(url, model).then((res) => {
+            dispatch(fetchUnits());
+        });
+    } 
+}
+
+export function updateUnit(id, model) {
+    return dispatch => {
+        const url = `/api/unit/${id}`;
+        axios.put(url, model).then(() => {
+            dispatch(fetchUnits());
+        });
+    }  
+}
+
+export function fetchUnits() {
+    return dispatch => {
+        const url = '/api/unit';
+        dispatch(setLoading(true));
+        axios.get(url).then((res) => {
+            dispatch({
+                type: FETCH_UNITS,
+                payload: res.data.results,
+            });
+            dispatch(setLoading(false));
+        });
+    } 
+}
+
+export function readMoisture(id) {
+    return dispatch => {
+        const url = `/api/unit/${id}/moisture`;
         const data = {};
         dispatch(setLoading(true));
-        axios.post(url, data).then(() => {
-            dispatch({ type: READ_MOISTURE });
+        axios.post(url, data).then((res) => {
             setTimeout(() => {
-                dispatch(fetchHistory());
+                dispatch(fetchUnits());
                 dispatch(setLoading(false));     
             }, DELAY_MS);
             
@@ -67,15 +99,14 @@ export function readMoisture() {
     } 
 }
 
-export function water(milliseconds) {
+export function water(id, milliseconds) {
     return dispatch => {
-        const url = '/api/water';
+        const url = `/api/unit/${id}/water`;
         const data = { ms: milliseconds };
         dispatch(setLoading(true));
         axios.post(url, data).then(() => {
-            dispatch({ type: WATER });
             setTimeout(() => {
-                dispatch(fetchHistory());
+                dispatch(fetchHistory(id));
                 dispatch(setLoading(false));     
             }, milliseconds);
             
@@ -83,11 +114,11 @@ export function water(milliseconds) {
     } 
 }
 
-export function fetchHistory() {
+export function fetchHistory(unitId) {
     return dispatch => {
-        const urlM = `/api/moisture?count=${MOISTURE_COUNT}`;
+        const urlM = `/api/unit/${unitId}/moisture?count=${MOISTURE_COUNT}`;
         axios.get(urlM).then(moistureRes => {
-            const urlW = `/api/water?count=${WATER_COUNT}`;
+            const urlW = `/api/unit/${unitId}/water?count=${WATER_COUNT}`;
             axios.get(urlW).then(waterRes => {
                 dispatch({
                     type: FETCH_HISTORY,

@@ -1,15 +1,14 @@
 import { 
-    FETCH_HISTORY,
+    FETCH_UNITS
 } from '../actions/index';
 
-export default function(state = null, action) {
+export default function(state = [], action) {
     let result = state;
 
     switch (action.type) {
-        case FETCH_HISTORY:
+        case FETCH_UNITS:
             if (action.payload) {
-                const md = action.payload.moistureRes.data.history;
-                result = md[md.length - 1];
+                result = action.payload;
             }
             break;
         default:

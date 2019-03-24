@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.my-navbar {
+  background-color: #e3f2fd;
+}
+
+.unit-panel {
+  margin-top: 20px;
+}

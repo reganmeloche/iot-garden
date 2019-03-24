@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { fetchHistory, } from '../actions/index';
@@ -24,7 +23,7 @@ class Metrics extends Component {
     };
 
     componentDidMount() {
-        this.props.fetchHistory();
+        this.props.fetchHistory(this.props.model.id);
     }
 
     handleMouseNear = point => {
@@ -82,37 +81,32 @@ class Metrics extends Component {
         const maxMoisture = 1200;
 
         return (
-            <Panel>
-                <Panel.Heading>History</Panel.Heading>
-                <Panel.Body>
-                    <Resizable>
-                        <ChartContainer timeRange={rng}>
-                            <ChartRow height="200">
-                                <YAxis id="axis1" label="Moisture" min={minMoisture} max={maxMoisture} width="60" type="linear"/>
-                                <Charts>
-                                    <LineChart axis="axis1" series={moistureTS} column={["aud"]}/>
-                                    
-                                    <ScatterChart
-                                        axis="axis1"
-                                        series={waterTS}
-                                        columns={["value"]}
-                                        info={[{ label: "Action", value: "Watered" }]}
-                                        infoHeight={28}
-                                        infoWidth={110}
-                                        infoStyle={{
-                                            fill: "black",
-                                            color: "#DDD"
-                                        }}
-                                        onMouseNear={p => this.handleMouseNear(p)}
-                                        highlight={this.state.highlight}
-                                        radius={4}
-                                    />
-                                </Charts>
-                            </ChartRow>
-                        </ChartContainer>
-                    </Resizable>
-                </Panel.Body>
-            </Panel>
+            <Resizable>
+                <ChartContainer timeRange={rng}>
+                    <ChartRow height="200">
+                        <YAxis id="axis1" label="Moisture" min={minMoisture} max={maxMoisture} width="60" type="linear"/>
+                        <Charts>
+                            <LineChart axis="axis1" series={moistureTS} column={["aud"]}/>
+                            
+                            <ScatterChart
+                                axis="axis1"
+                                series={waterTS}
+                                columns={["value"]}
+                                info={[{ label: "Action", value: "Watered" }]}
+                                infoHeight={28}
+                                infoWidth={110}
+                                infoStyle={{
+                                    fill: "black",
+                                    color: "#DDD"
+                                }}
+                                onMouseNear={p => this.handleMouseNear(p)}
+                                highlight={this.state.highlight}
+                                radius={4}
+                            />
+                        </Charts>
+                    </ChartRow>
+                </ChartContainer>
+            </Resizable>
 
         );
     }
@@ -128,7 +122,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchHistory: () => dispatch(fetchHistory()),
+        fetchHistory: (id) => dispatch(fetchHistory(id)),
     };
 }
 

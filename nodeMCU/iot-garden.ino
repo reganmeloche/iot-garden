@@ -15,8 +15,8 @@ const char *MQTT_PASSWORD = "[INSERT DATA]";
 const char *MQTT_CLIENT_NAME = "[INSERT DATA]";
 
 // MQTT Topics
-const char *PUB_TOPIC = "device_call";
-const char *SUB_TOPIC = "web_call";
+const char *PUB_TOPIC = "device_call//[UNIT ID]";
+const char *SUB_TOPIC = "web_call/[UNIT ID]";
 
 /// WiFi Network credentials
 const char* WIFI_SSID = "[INSERT DATA]";
@@ -103,7 +103,7 @@ void parseAndDispatchMessage(byte* payload, unsigned int len) {
  * isRead: True if the command is a "read" command (e.g. reading temp)
  *         False if it is a "write" command (e.g. moving a motor)
  * command: Character that denotes the sensor/actuator being triggered
- *          M = moisture sensor, W = water pump, ...
+ *          M = moisture sensor, W = water pump, P = poll period
  * value: String denoting the actual value being sent to an actuator (writing only)
 */
 void control(bool isRead, char command, char* value) {
@@ -113,6 +113,9 @@ void control(bool isRead, char command, char* value) {
   } else if (command == 'M') {
     readMoisture();
     timer.restartTimer(timerId);
+  } else if (command == 'P') {
+    int pollPeriodMinutes = atoi(value);
+    setPollPeriod(pollPeriodMinutes);
   }
 }
 
@@ -135,6 +138,12 @@ void publishMoistureValues(float tempC, uint16_t capread) {
   char msg[12] = "";
   sprintf(msg,"%s%s", "M", result);
   client.publish(PUB_TOPIC, msg); 
+}
+
+void setPollPeriod(int minutes) {
+  timer.deleteTimer(timerId);
+  MOISTURE_POLL_MS = minutes * 60 * 1000;
+  timerId = timer.setInterval(MOISTURE_POLL_MS, readMoisture);
 }
 
 

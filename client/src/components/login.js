@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, InputGroup, Button } from 'react-bootstrap';
+import { Form, InputGroup, Button } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import { login } from '../actions/index';
@@ -10,25 +10,28 @@ class Login extends Component {
     this.submitLogin = this.submitLogin.bind(this);
   }
 
-  submitLogin() {
+  submitLogin(e) {
+    e.preventDefault();
     const value = { text: this.refs.password.value };
     this.props.login(value);
   }
 
   render() {
     return (
-        <div>
-            <Form>
-                <FormGroup>
+        <>
+            <Form className="form-inline">
+                <Form.Group>
                     <InputGroup>
                         <input className="form-control" type="password" ref="password" placeholder="Password"/>
-                        <InputGroup.Button>
-                            <Button type="button" onClick={this.submitLogin}>Login</Button>
-                        </InputGroup.Button>
+                        <InputGroup.Append>
+                            <Button variant="outline-dark" type="submit" onClick={this.submitLogin}>
+                              Login
+                            </Button>
+                        </InputGroup.Append>
                     </InputGroup>
-                </FormGroup>
+                </Form.Group>
           </Form>
-        </div>
+        </>
     );
   }
 }
