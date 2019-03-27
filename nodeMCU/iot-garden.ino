@@ -15,7 +15,7 @@ const char *MQTT_PASSWORD = "[INSERT DATA]";
 const char *MQTT_CLIENT_NAME = "[INSERT DATA]";
 
 // MQTT Topics
-const char *PUB_TOPIC = "device_call//[UNIT ID]";
+const char *PUB_TOPIC = "device_call/[UNIT ID]";
 const char *SUB_TOPIC = "web_call/[UNIT ID]";
 
 /// WiFi Network credentials

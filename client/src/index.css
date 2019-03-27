@@ -20,3 +20,7 @@ code {
 .unit-panel {
   margin-top: 20px;
 }
+
+.download-link {
+  float:right;
+}

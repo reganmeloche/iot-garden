@@ -4,6 +4,8 @@ import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { createUnit, updateUnit } from '../../actions/index';
 
+import { mainFile } from '../../download/template';
+
 class UnitForm extends Component {
     constructor(props) {
         super(props);
@@ -46,7 +48,39 @@ class UnitForm extends Component {
         this.setState({ [e.target.id]: e.target.value});
     }
 
+    createFile = () => {
+        const fileString = mainFile;
+        const replaced = fileString
+            .replace(/{{UNIT_ID}}/g, this.state.id)
+            .replace('{{POLLING_PERIOD}}', this.props.model.pollingPeriodMinutes);
+        const encoded = encodeURIComponent(replaced);
+        const result = `data:text/plain;charset=utf-8,${encoded}`;
+        return result;
+    }
+
+    renderLink = () => {
+        const filename = this.props.model.name.trim().split(' ').join('_') + '.ino';
+        
+        const fileString = mainFile;
+        const replaced = fileString
+            .replace(/{{UNIT_ID}}/g, this.state.id)
+            .replace('{{POLLING_PERIOD}}', this.props.model.pollingPeriodMinutes);
+        const encoded = encodeURIComponent(replaced);
+        const contents = `data:text/plain;charset=utf-8,${encoded}`;
+        
+        const result = (
+            <a className="download-link" 
+                href={contents} 
+                download={filename}>
+                Download file
+            </a>
+        )
+        return result;
+    }
+
     render() {
+        const downloadLink = this.state.id ? this.renderLink() : null;
+
         return (
             <div className="unit-form-container">
                 <Form onSubmit={(e) => {this.handleSubmit(e)}}>
@@ -68,6 +102,8 @@ class UnitForm extends Component {
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
+
+                    {downloadLink}
                 </Form>
                 
             </div>
