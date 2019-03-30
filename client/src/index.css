@@ -24,3 +24,12 @@ code {
 .download-link {
   float:right;
 }
+
+.react-datetime-picker__wrapper {
+  padding: .375rem .75rem;
+}
+
+.metrics-control {
+  margin:auto;
+  width: 90%; 
+}

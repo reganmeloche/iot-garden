@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import { fetchHistory, } from '../actions/index';
-
+import { Alert } from 'react-bootstrap';
+import moment from 'moment';
 import { TimeSeries, TimeRange } from "pondjs";
 import {
     Charts,
@@ -14,17 +13,15 @@ import {
     ScatterChart,
 } from "react-timeseries-charts";
 
+const MAX_COUNT = 500;
+
 // Pond: http://software.es.net/pond/#/
 // charts: http://software.es.net/react-timeseries-charts/#/
 
-class Metrics extends Component {
+class Chart extends Component {
     state = {
         highlight: null,
     };
-
-    componentDidMount() {
-        this.props.fetchHistory(this.props.model.id);
-    }
 
     handleMouseNear = point => {
         this.setState({
@@ -56,26 +53,18 @@ class Metrics extends Component {
         });
     }
 
-    getChartRange() {
-        const firstMoisture = new Date(this.props.moistureData[0].date);
-        const firstWater = new Date(this.props.waterData[0].date);
-        const begin = Math.min(firstMoisture, firstWater);
-        
-        const lastMoisture = new Date(this.props.moistureData[this.props.moistureData.length - 1].date);
-        const lastWater = new Date(this.props.waterData[this.props.waterData.length - 1].date);
-        const end = Math.max(lastMoisture, lastWater);
-
-        return new TimeRange(begin, end);
-    }
-
     render() {
         if (this.props.moistureData.length === 0) {
-            return (<div>No data to show</div>);
+            return (<Alert variant="warning">No data to show. Please select different dates</Alert>);
+        }
+
+        if (this.props.moistureData.length > MAX_COUNT) {
+            return (<Alert variant="warning">Too many results. Please narrow your timeframe.</Alert>);
         }
 
         const moistureTS = this.buildMoistureTS();
         const waterTS = this.buildWaterTS();
-        const rng = this.getChartRange();
+        const rng = new TimeRange(this.props.startDate, this.props.endDate);
 
         const minMoisture = 200;
         const maxMoisture = 1200;
@@ -114,18 +103,24 @@ class Metrics extends Component {
 
 
 const mapStateToProps = state => {
-    return {
-        moistureData: state.moistureData,
-        waterData: state.waterData,
-    }
-}
+    let moistureData = [];
+    let waterData = [];
+    let startDate = moment().valueOf();
+    let endDate = moment().valueOf();
 
-const mapDispatchToProps = dispatch => {
+    if (state.history) {
+        moistureData = state.history.moistureData;
+        waterData = state.history.waterData;
+        startDate = state.history.startDate;
+        endDate = state.history.endDate;
+    }
     return {
-        fetchHistory: (id) => dispatch(fetchHistory(id)),
+        moistureData,
+        waterData,
+        startDate,
+        endDate,
     };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(Metrics);
+export default connect(mapStateToProps, null)(Chart);
 

@@ -19,8 +19,9 @@ module.exports = function (app) {
     app.get('/api/unit/:id/moisture', (req, res) => {
         console.log('Fetching Moisture Data...');
         const unitId = req.params.id;
-        const count = req.query.count;
-        MoistureLib.fetch(unitId, count).then(history => {
+        const startDate = req.query.start_date;
+        const endDate = req.query.end_date;
+        MoistureLib.fetch(unitId, startDate, endDate).then(history => {
             res.status(200).send({ history });
         });
     });
@@ -28,8 +29,9 @@ module.exports = function (app) {
     app.get('/api/unit/:id/water', (req, res) => {
         console.log('Fetching Water Data...');
         const unitId = req.params.id;
-        const count = req.query.count;
-        WaterLib.fetch(unitId, count).then(history => {
+        const startDate = req.query.start_date;
+        const endDate = req.query.end_date;
+        WaterLib.fetch(unitId, startDate, endDate).then(history => {
             res.status(200).send({ history });
         });
     });

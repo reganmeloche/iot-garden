@@ -1,13 +1,16 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Moisture = mongoose.model('moisture');
 
 module.exports = {
-  // TODO: May want to move some of this logic to the front-end
-  fetch: function(unitId, max = 20) {
+  fetch: function(unitId, startDate, endDate) {
     return Moisture.find({ unitId }).then((mongoResult) => {
-      return mongoResult.sort((x, y) => { 
-        return new Date(y.date) - new Date(x.date);
-      }).slice(0, max).reverse();
+      return mongoResult.filter(x => {
+        const xd = moment(x.date).valueOf();
+        return xd > startDate && xd < endDate; 
+      }).sort((x, y) => { 
+        return moment(y.date) - moment(x.date);
+      }).reverse();
     });
   },
 

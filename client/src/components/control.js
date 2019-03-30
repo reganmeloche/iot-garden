@@ -101,7 +101,7 @@ class Control extends Component {
                     <InputGroup>
                         <InputGroup.Prepend>
                             <InputGroup.Text>
-                                Water time (s)
+                                Water time (sec)
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                             <input 

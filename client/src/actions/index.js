@@ -8,8 +8,6 @@ export const SET_LOADING = 'set_loading';
 export const FETCH_HISTORY = 'fetch_history';
 
 const DELAY_MS = 1000;
-const MOISTURE_COUNT = 20;
-const WATER_COUNT = 5;
 
 // TODO: Break into separate files
 
@@ -106,7 +104,7 @@ export function water(id, milliseconds) {
         dispatch(setLoading(true));
         axios.post(url, data).then(() => {
             setTimeout(() => {
-                dispatch(fetchHistory(id));
+                dispatch(fetchUnits());
                 dispatch(setLoading(false));     
             }, milliseconds);
             
@@ -114,15 +112,16 @@ export function water(id, milliseconds) {
     } 
 }
 
-export function fetchHistory(unitId) {
+export function fetchHistory(unitId, startDate, endDate) {
     return dispatch => {
-        const urlM = `/api/unit/${unitId}/moisture?count=${MOISTURE_COUNT}`;
+
+        const urlM = `/api/unit/${unitId}/moisture?start_date=${startDate}&end_date=${endDate}`;
         axios.get(urlM).then(moistureRes => {
-            const urlW = `/api/unit/${unitId}/water?count=${WATER_COUNT}`;
+            const urlW = `/api/unit/${unitId}/water?start_date=${startDate}&end_date=${endDate}`;
             axios.get(urlW).then(waterRes => {
                 dispatch({
                     type: FETCH_HISTORY,
-                    payload: { moistureRes, waterRes },
+                    payload: { moistureRes, waterRes, startDate, endDate },
                 })
             })
         })

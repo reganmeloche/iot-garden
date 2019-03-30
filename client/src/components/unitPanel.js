@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Card, Button, Collapse } from 'react-bootstrap';
 
 import Control from './control';
-import Metrics from './metrics';
+import Metrics from './metrics/index';
 
 class Dashboard extends Component {
     constructor(props, context) {
