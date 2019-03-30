@@ -1,3 +1,4 @@
+/*** Default stuff ***/
 body {
   margin: 0;
   padding: 0;
@@ -13,6 +14,13 @@ code {
     monospace;
 }
 
+.App {
+  padding: 10px;
+}
+
+
+/*** Nav and outline ***/
+
 .my-navbar {
   background-color: #e3f2fd;
 }
@@ -21,9 +29,45 @@ code {
   margin-top: 20px;
 }
 
+
+/*** Info Display ***/
+
+.info-line {
+  padding-top: 12px;
+}
+
+.info-label {
+  font-size: 16px;
+  padding-right: 5px;
+  color: #444444;
+  font-weight: 600;
+}
+
+.info-value {
+  font-size: 16px;
+  color: #227e79;
+}
+
+.read-moisture-button {
+  margin-left: 8px;
+  padding-top:1px;
+  padding-bottom:1px;
+  padding-left:4px;
+  padding-right:4px;
+  font-size: 10px
+  
+}
+
+.water-input {
+  max-width: 100px;
+}
+
 .download-link {
   float:right;
 }
+
+
+/*** Metrics ***/
 
 .react-datetime-picker__wrapper {
   padding: .375rem .75rem;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import { login } from '../actions/index';
+import { login } from '../../actions/register';
 
 class Login extends Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import { createUnit, updateUnit } from '../../actions/index';
+import { createUnit, updateUnit } from '../../actions/units';
 
 import { mainFile } from '../../download/template';
 
@@ -46,16 +46,6 @@ class UnitForm extends Component {
 
     handleChange = (e) => {
         this.setState({ [e.target.id]: e.target.value});
-    }
-
-    createFile = () => {
-        const fileString = mainFile;
-        const replaced = fileString
-            .replace(/{{UNIT_ID}}/g, this.state.id)
-            .replace('{{POLLING_PERIOD}}', this.props.model.pollingPeriodMinutes);
-        const encoded = encodeURIComponent(replaced);
-        const result = `data:text/plain;charset=utf-8,${encoded}`;
-        return result;
     }
 
     renderLink = () => {

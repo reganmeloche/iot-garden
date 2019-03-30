@@ -1,6 +1,6 @@
 import { 
     FETCH_UNITS
-} from '../actions/index';
+} from '../actions/units';
 
 export default function(state = [], action) {
     let result = state;

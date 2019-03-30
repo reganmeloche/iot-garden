@@ -1,11 +1,14 @@
-import moment from 'moment';
 import React, { Component } from 'react';
 import { Button, Form, InputGroup, } from 'react-bootstrap';
+import moment from 'moment';
+
 import { connect } from 'react-redux';
+import { readMoisture, water, } from '../../actions/control';
 
-import UnitModal from './unit/modal';
-import { readMoisture, water, } from '../actions/index';
+import UnitModal from '../unit/modal';
 
+const MIN_WATER_SEC = 5;
+const MAX_WATER_SEC = 15;
 
 class Control extends Component {
     handleReadMoisture = () => {
@@ -14,7 +17,7 @@ class Control extends Component {
 
     handleWater = () => {
         const value = parseInt(this.refs.water_secs.value);
-        if (value >= 5 && value <= 15) {
+        if (value >= MIN_WATER_SEC && value <= MAX_WATER_SEC) {
             this.props.onWater(this.props.model.id, value * 1000);    
         }
     }
@@ -53,12 +56,12 @@ class Control extends Component {
                     {deviceData.moistureReading}
                 </span>
                 <Button 
-                    className="refresh-button"
-                    variant="outline-primary" size="sm"
+                    className="read-moisture-button"
+                    variant="outline-secondary" size="sm"
                     disabled={this.props.isLoading} 
                     onClick={this.handleReadMoisture}
                 >
-                    Refresh
+                    Read
                 </Button>
             </div>
             
@@ -105,8 +108,9 @@ class Control extends Component {
                             </InputGroup.Text>
                         </InputGroup.Prepend>
                             <input 
-                                placeholder="5 - 15" className="form-control water-input" ref="water_secs" 
-                                type="number" min="5" max="15" maxLength="2"/>
+                                placeholder={`${MIN_WATER_SEC} - ${MAX_WATER_SEC}`} 
+                                className="form-control water-input" ref="water_secs" 
+                                type="number" min={MIN_WATER_SEC} max={MAX_WATER_SEC}/>
                         <InputGroup.Append>
                             <Button variant="outline-primary" disabled={this.props.isLoading} onClick={this.handleWater}>Go!</Button>
                         </InputGroup.Append>

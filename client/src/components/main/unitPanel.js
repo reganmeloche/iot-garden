@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Row, Col, Card, Button, Collapse } from 'react-bootstrap';
 
-import Control from './control';
-import Metrics from './metrics/index';
+import Control from '../control';
+import Metrics from '../metrics/index';
 
 class Dashboard extends Component {
     constructor(props, context) {
         super(props, context);
     
         this.state = {
-          open: false,
+          open: (this.props.index === 0),
         };
     }
 

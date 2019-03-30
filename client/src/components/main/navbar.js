@@ -3,7 +3,7 @@ import { Navbar, Button } from 'react-bootstrap';
 import Login from './login';
 
 import { connect } from 'react-redux';
-import { logout } from '../actions/index';
+import { logout } from '../../actions/register';
 
 class MyNavbar extends Component {
   submitLogout = () => {

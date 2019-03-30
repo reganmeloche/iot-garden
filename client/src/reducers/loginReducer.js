@@ -2,7 +2,7 @@ import {
     LOGIN,
     FETCH_USER,
     LOGOUT,
-} from '../actions/index';
+} from '../actions/register';
 
 export default function(state = false, action) {
     let result = state;

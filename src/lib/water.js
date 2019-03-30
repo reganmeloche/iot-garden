@@ -3,7 +3,6 @@ const moment = require('moment');
 const Water = mongoose.model('water');
 
 module.exports = {
-  // TODO: May want to move some of this logic to the front-end
   fetch: function(unitId, startDate, endDate) {
     return Water.find({ unitId }).then((mongoResult) => {
       return mongoResult.filter(x => {

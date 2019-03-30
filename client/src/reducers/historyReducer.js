@@ -1,6 +1,6 @@
 import { 
     FETCH_HISTORY
-} from '../actions/index';
+} from '../actions/control';
 
 export default function(state = null, action) {
     let result = state;

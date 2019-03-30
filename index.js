@@ -6,26 +6,25 @@ const passport = require('passport');
 const session = require('express-session');
 const keys = require('./config/keys');
 
-// DB Stuff
+// DB setup
 require('./src/models');
 mongoose.connect(keys.mongoUri);
 
-// Other setup
+// App setup
 const bodyParser = require('body-parser');
 const app = express();
-
 app.set('port', (process.env.PORT || 9107));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Auth stuff
+// Auth setup
 require('./src/passport');
 app.use(session({ secret: keys.sessionSecret, resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-require('./src/control')(app);
+require('./src/routes/index')(app);
 
 // Prod setup
 if (process.env.NODE_ENV === 'production') {

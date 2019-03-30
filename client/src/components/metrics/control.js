@@ -1,10 +1,10 @@
-import moment from 'moment';
 import React, { Component } from 'react';
+import { InputGroup, Button } from 'react-bootstrap';
+import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
-import { InputGroup, ButtonGroup, Button } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import { fetchHistory, } from '../../actions/index';
+import { fetchHistory } from '../../actions/control';
 
 class MetricsControl extends Component {
     constructor(props) {

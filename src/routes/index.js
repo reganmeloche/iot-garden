@@ -1,14 +1,14 @@
 const mqtt = require('mqtt');
 const passport = require('passport');
 const moment = require('moment');
-const keys = require('../config/keys');
+const keys = require('../../config/keys');
 
 const SUBSCRIBE_TOPIC = 'device_call';
 const PUBLISH_TOPIC = 'web_call';
 
-const MoistureLib = require('./lib/moisture');
-const WaterLib = require('./lib/water');
-const UnitLib = require('./lib/unit');
+const MoistureLib = require('../lib/moisture');
+const WaterLib = require('../lib/water');
+const UnitLib = require('../lib/unit');
 
 // TODO: Start this separately and attach to the app?
 const client = mqtt.connect(keys.mqttUrl);
@@ -40,21 +40,6 @@ module.exports = function (app) {
         console.log(`Forcing Moisture Read...`);
         const message = `RM`;
         client.publish(`${PUBLISH_TOPIC}/${req.params.id}`, message);
-        
-        // FAKE!!!
-        /*
-        const model = {
-            unitId: req.params.id,
-            value: 200 + Math.random() * 500,
-            date: moment(),
-        };
-        MoistureLib.save(model).then(() => {
-            UnitLib.moisture(model).then(() => {
-                res.status(201).send({ status: 'done' });
-            });
-        });*/
-        // END FAKENESS
-
         res.status(201).send({ status: 'done' });
     });
 

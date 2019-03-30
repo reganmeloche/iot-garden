@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Alert } from 'react-bootstrap';
 import moment from 'moment';
 import { TimeSeries, TimeRange } from "pondjs";
@@ -12,6 +11,7 @@ import {
     Resizable,
     ScatterChart,
 } from "react-timeseries-charts";
+import { connect } from 'react-redux';
 
 const MAX_COUNT = 500;
 
@@ -123,4 +123,3 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, null)(Chart);
-

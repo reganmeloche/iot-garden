@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { fetchUnits, } from '../actions/index';
 
-import UnitModal from './unit/modal';
+import { connect } from 'react-redux';
+import { fetchUnits } from '../../actions/units';
+
+import UnitModal from '../unit/modal';
 import UnitPanel from './unitPanel';
 
 class Dashboard extends Component {
@@ -12,8 +13,8 @@ class Dashboard extends Component {
     }
 
     renderUnits = () => {
-        var res = this.props.units.map(x => {
-            return (<UnitPanel model={x} key={x.id}/>);
+        var res = this.props.units.map((x, i) => {
+            return (<UnitPanel model={x} key={x.id} index={i}/>);
         });
         return (<>{res}</>);
     }
@@ -26,8 +27,8 @@ class Dashboard extends Component {
                         {this.renderUnits()}
                     </Col>
                 </Row>
+                <br/>
                 <Row>
-                    <br/><br/>
                     <Col md={2}>
                         <UnitModal 
                             buttonSays="New Unit"

@@ -9,12 +9,7 @@ module.exports = {
   },
 
   fetchAll: () => {
-    return Unit.find({}).then((mongoResult) => {
-      return mongoResult.map(x => {
-        // Any mapping to do here? probably
-        return x;
-      });
-    });
+    return Unit.find({});
   },
 
   save: (unit) => {
