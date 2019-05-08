@@ -4,7 +4,7 @@ import { Row, Col, Card, Button, Collapse } from 'react-bootstrap';
 import Control from '../control';
 import Metrics from '../metrics/index';
 
-class Dashboard extends Component {
+class UnitPanel extends Component {
     constructor(props, context) {
         super(props, context);
     
@@ -48,4 +48,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default UnitPanel;

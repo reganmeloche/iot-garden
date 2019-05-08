@@ -73,6 +73,26 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/api/unit_full/:id', (req, res) => {
+        console.log('Fetching Full unit...');
+        const startDate = req.query.start_date;
+        const endDate = req.query.end_date;
+        UnitLib.fetchFull(req.params.id, startDate, endDate).then((result) => {
+            res.status(200).send(result);
+        });
+        // TODO: Handle 404
+    });
+
+    app.get('/api/unit_full', (req, res) => {
+        console.log('Fetching all full units...');
+        const startDate = req.query.start_date;
+        const endDate = req.query.end_date;
+        UnitLib.fetchAllFull(startDate, endDate).then((results) => {
+            res.status(200).send({ results });
+        });
+    });
+
+
     app.post('/api/unit', (req, res) => {
         console.log('Adding new unit...', req.body);
         UnitLib.save(req.body).then(result => {
@@ -95,7 +115,7 @@ module.exports = function (app) {
 
     app.delete('/api/unit/:id', (req, res) => {
         console.log('Deleting unit...');
-        UnitLib.delete(req.params.id).then(() => {
+        UnitLib.deleteUnit(req.params.id).then(() => {
             res.status(200).send({});
         });
     });

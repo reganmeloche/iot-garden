@@ -11,7 +11,6 @@ import {
     Resizable,
     ScatterChart,
 } from "react-timeseries-charts";
-import { connect } from 'react-redux';
 
 const MAX_COUNT = 500;
 
@@ -30,7 +29,8 @@ class Chart extends Component {
     };
 
     buildMoistureTS = () => {
-        const points = this.props.moistureData.map(x => {
+        const moistureData = this.props.history.moistureData;
+        const points = moistureData.map(x => {
             return [ new Date(x.date), x.value ];
         });
 
@@ -41,9 +41,10 @@ class Chart extends Component {
         });
     }
 
-    buildWaterTS = (ts) => {
-        const points = this.props.waterData.map(x => {
-            return [ new Date(x.date), 200 ];
+    buildWaterTS = (minVal) => {
+        const waterData = this.props.history.waterData;
+        const points = waterData.map(x => {
+            return [ new Date(x.date), minVal ];
         })
 
         return new TimeSeries({
@@ -54,20 +55,24 @@ class Chart extends Component {
     }
 
     render() {
-        if (this.props.moistureData.length === 0) {
+        const history = this.props.history;
+        if (!history.moistureData || history.moistureData.length === 0) {
             return (<Alert variant="warning">No data to show. Please select different dates</Alert>);
         }
 
-        if (this.props.moistureData.length > MAX_COUNT) {
+        if (history.moistureData.length > MAX_COUNT) {
             return (<Alert variant="warning">Too many results. Please narrow your timeframe.</Alert>);
         }
 
-        const moistureTS = this.buildMoistureTS();
-        const waterTS = this.buildWaterTS();
-        const rng = new TimeRange(this.props.startDate, this.props.endDate);
+        const minMoisture = Math.min.apply(Math, history.moistureData.map(o  => o.value)) - 50;
+        const maxMoisture = Math.max.apply(Math, history.moistureData.map(o  => o.value)) + 50;
 
-        const minMoisture = 200;
-        const maxMoisture = 1200;
+        const moistureTS = this.buildMoistureTS();
+        const waterTS = this.buildWaterTS(minMoisture);
+
+        const start = moment(new Date(history.startDate)).valueOf();
+        const end = moment(new Date(history.endDate)).valueOf();
+        const rng = new TimeRange(start, end);
 
         return (
             <Resizable>
@@ -96,30 +101,7 @@ class Chart extends Component {
                     </ChartRow>
                 </ChartContainer>
             </Resizable>
-
         );
     }
 }
-
-
-const mapStateToProps = state => {
-    let moistureData = [];
-    let waterData = [];
-    let startDate = moment().valueOf();
-    let endDate = moment().valueOf();
-
-    if (state.history) {
-        moistureData = state.history.moistureData;
-        waterData = state.history.waterData;
-        startDate = state.history.startDate;
-        endDate = state.history.endDate;
-    }
-    return {
-        moistureData,
-        waterData,
-        startDate,
-        endDate,
-    };
-}
-
-export default connect(mapStateToProps, null)(Chart);
+export default Chart;

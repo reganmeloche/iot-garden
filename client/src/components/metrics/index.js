@@ -7,7 +7,7 @@ class Metrics extends Component {
     render() {
         return (
             <>
-                <Chart model={this.props.model}/>
+                <Chart history={this.props.model.history}/>
                 <MetricsControl model={this.props.model}/>
             </>
         );

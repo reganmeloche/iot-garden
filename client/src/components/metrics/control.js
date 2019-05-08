@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
 import { InputGroup, Button } from 'react-bootstrap';
-import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 
 import { connect } from 'react-redux';
-import { fetchHistory } from '../../actions/control';
+import { fetchFullUnit, getDefaultDates } from '../../actions/units';
 
 class MetricsControl extends Component {
     constructor(props) {
         super(props);
-        const today = new Date();
-        const yesterday = today.setDate(today.getDate() - 1);
+        const history = props.model.history;
+        const [startDate, endDate] = getDefaultDates(history.startDate, history.endDate);
         this.state = {
-            startDate: new Date(yesterday),
-            endDate: new Date(),
+            startDate,
+            endDate
         };
     }
 
-    componentDidMount() {
-        this.fetchData();
-    }
-
     fetchData = () => {
-        let startDate = moment(this.state.startDate).valueOf();
-        let endDate = moment(this.state.endDate).valueOf();
-        this.props.fetchHistory(this.props.model.id, startDate, endDate);
+        this.props.fetchFullUnit(this.props.model.id, this.state.startDate, this.state.endDate);
     }
 
     onChangeStartDate = startDate => this.setState({ startDate });
@@ -59,7 +52,7 @@ class MetricsControl extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchHistory: (id, startDate, endDate) => dispatch(fetchHistory(id, startDate, endDate)),
+        fetchFullUnit: (id, startDate, endDate) => dispatch(fetchFullUnit(id, startDate, endDate)),
     };
 }
 

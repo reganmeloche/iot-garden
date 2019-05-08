@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
-import { fetchUnits } from '../../actions/units';
+import { fetchFullUnits } from '../../actions/units';
 
 import UnitModal from '../unit/modal';
 import UnitPanel from './unitPanel';
 
 class Dashboard extends Component {
     componentWillMount() {
-        this.props.onFetchUnits();
+        this.props.onFetchFullUnits();
     }
 
     renderUnits = () => {
@@ -49,7 +49,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchUnits: () => dispatch(fetchUnits()),
+        onFetchFullUnits: () => dispatch(fetchFullUnits()),
     };
 }
 

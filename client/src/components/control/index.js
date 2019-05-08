@@ -30,9 +30,8 @@ class Control extends Component {
             lastWaterDate: '--',
         };
 
-        const m = this.props.model;
-        if (m.deviceData) {
-            const d = m.deviceData;
+        if (this.props.model.deviceData) {
+            const d = this.props.model.deviceData;
             result.lastActive = this.datify(d.lastActive) || result.lastActive;
             result.moistureReading = d.moistureReading || result.moistureReading;
             result.lastMoistureDate = this.datify(d.lastMoistureDate) || result.lastMoistureDate;
@@ -127,11 +126,10 @@ class Control extends Component {
     }
 }
 
-
 const mapStateToProps = state => {
     return {
         isLoading: state.isLoading,
-    }
+    };
 }
 
 const mapDispatchToProps = dispatch => {
