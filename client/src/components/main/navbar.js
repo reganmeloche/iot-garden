@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Navbar, Button } from 'react-bootstrap';
-import Login from './login';
+import { Navbar, Button, ButtonGroup, NavDropdown } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import { logout } from '../../actions/register';
+
+import RegisterModal from '../register/registerModal';
 
 class MyNavbar extends Component {
   submitLogout = () => {
@@ -11,10 +12,26 @@ class MyNavbar extends Component {
   }
 
   render() {
-    let login = (<Button variant="outline-dark" onClick={this.submitLogout}>Log Out</Button>);
 
-    if (!this.props.loggedIn) {
-        login = (<Login/>);
+    let register = (
+        <ButtonGroup>
+           <RegisterModal type='login'/>
+           <RegisterModal type='signup'/>
+       </ButtonGroup>
+    );
+
+    if (this.props.login) {
+        let username = this.props.login.username;
+        register = (
+            <NavDropdown title={username} id="basic-nav-dropdown">
+                <NavDropdown.Item>
+                    <Button variant="link" onClick={this.submitLogout}>Log Out</Button>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <RegisterModal username={username} type='changePassword'/>
+                </NavDropdown.Item>
+            </NavDropdown>
+        ); 
     }
 
     return (
@@ -22,7 +39,7 @@ class MyNavbar extends Component {
             <Navbar.Brand>
                 <div>IoT Garden</div>
             </Navbar.Brand>
-            {login}        
+            {register}        
         </Navbar>
     );
   }

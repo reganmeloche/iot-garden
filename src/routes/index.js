@@ -9,6 +9,8 @@ const PUBLISH_TOPIC = 'web_call';
 const MoistureLib = require('../lib/moisture');
 const WaterLib = require('../lib/water');
 const UnitLib = require('../lib/unit');
+const AuthLib = require('../lib/auth');
+const Errors = require('../lib/errors');
 
 // TODO: Start this separately and attach to the app?
 const client = mqtt.connect(keys.mqttUrl);
@@ -97,7 +99,7 @@ module.exports = function (app) {
         console.log('Adding new unit...', req.body);
         UnitLib.save(req.body).then(result => {
             res.status(201).send(result);
-        })
+        });
     });
 
     app.put('/api/unit/:id', (req, res) => {
@@ -155,11 +157,50 @@ module.exports = function (app) {
     });
 
     /*** AUTH ***/
-    app.post('/api/login', passport.authenticate('local', {
-        failureRedirect: '/',
-    }),
-    (req, res) => { res.status(200).send(req.user); },
-    );
+    app.post('/api/login', (req, res, next) => { 
+        return passport.authenticate('local', (err, user) => {
+            if (err) { 
+                if (err instanceof Errors.NotFound || err instanceof Errors.ValidationError) {
+                    return res.status(400).send({message: err.message}); 
+                }  else {
+                    return res.status(500).send({ message: 'Something went wrong.' });
+                }
+            } else if (!user) { 
+                return res.status(400).send({ message: 'User not found.' });
+            } else {
+                req.logIn(user, (err) => {
+                    if (err) { return next(err); } // what to do here?
+                    return res.status(200).send(user);
+                })
+            }
+        })(req, res, next);
+    });
+
+    app.post('/api/user', (req, res) => {
+        AuthLib.createUser(req.body).then(result => {
+            res.status(201).send(result);
+        }).catch(err => {
+            if (err instanceof Errors.ValidationError) {
+                res.status(400).send({message: err.message });
+            } else {
+                res.status(500).send();
+            }
+        })
+    });
+
+    app.post('/api/change_password', (req, res) => {
+        const { username, password, newPassword } = req.body;
+        AuthLib.changePassword(username, password, newPassword).then(result => {
+            req.logout();
+            res.status(200).send(result);
+        }).catch(err => {
+            if (err instanceof Errors.ValidationError) {
+                res.status(400).send({message: err.message });
+            } else {
+                res.status(500).send();
+            }
+        })
+    });
 
     app.get('/api/fetch_user', (req, res) => {
         res.status(200).send(req.user);

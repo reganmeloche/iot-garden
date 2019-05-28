@@ -13,13 +13,13 @@ class App extends Component {
 
 	render() {
 		let dashboard = null;
-		if (this.props.loggedIn) {
+		if (this.props.login) {
 			dashboard = (<Dashboard/>);
 		}
 
 		return (
 			<div className="App">
-				<MyNavbar loggedIn={this.props.loggedIn}/>
+				<MyNavbar login={this.props.login}/>
 				<div>{dashboard}</div>
 			</div>
 		);
@@ -28,7 +28,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
 	return {
-		loggedIn: state.loggedIn || false,
+		login: state.login,
 	};
 }
 

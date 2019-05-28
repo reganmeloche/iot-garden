@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const userSchema = new Schema({
+    userId: String,
+    username: String,
+    password: String,
+    createdDate: Date,
+});
+
 const moistureSchema = new Schema({
     unitId: String,
     value: Number,
@@ -27,6 +34,7 @@ const unitSchema = new Schema({
     },
 });
 
+mongoose.model('users', userSchema);
 mongoose.model('moisture', moistureSchema);
 mongoose.model('water', waterSchema);
 mongoose.model('unit', unitSchema);

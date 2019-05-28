@@ -1,22 +1,23 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const keys = require('../config/keys');
+const AuthLib = require('./lib/auth');
 
-passport.use(new LocalStrategy(
-  (username, password, done) => {
-    if (password === keys.password) {
-        return done(null, { userId: keys.userId });
-    }
-    return done(null, false, { message: 'Incorrect password' });
-  }
-));
+passport.use(new LocalStrategy((username, password, done) => {
+    AuthLib.tryLogin(username, password).then((user) => {
+        return done(null, user);
+    }).catch(err => {
+        return done(err, false);
+    });
+}));
 
 passport.serializeUser((user, done) => {
   done(null, user.userId);
 });
   
 passport.deserializeUser((id, done) => {
-  if (id === keys.userId) {
-    done(null, { userId: id });
-  }
+    AuthLib.getUser(id).then(res => {
+        if (id === res.userId) {
+            done(null, res);
+        }
+    });
 });

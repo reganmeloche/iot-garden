@@ -23,6 +23,15 @@ app.use(session({ secret: keys.sessionSecret, resave: false, saveUninitialized: 
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware to make sure logged in
+const blockedPaths = ['/api/unit', '/api/unit*', '/api/change_password'];
+app.use(blockedPaths, (req, res, next) => {
+  if (!req.user) {
+    return res.status(404).send('Nope');
+  }
+  next();
+})
+
 // Routes
 require('./src/routes/index')(app);
 
