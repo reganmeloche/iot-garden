@@ -3,12 +3,14 @@ import { Row, Col } from 'react-bootstrap';
 
 import { connect } from 'react-redux';
 import { fetchFullUnits } from '../../actions/units';
+import { registerUnits } from '../../actions/register';
 
 import UnitModal from '../unit/modal';
 import UnitPanel from './unitPanel';
 
 class Dashboard extends Component {
     componentWillMount() {
+        this.props.onRegisterUnits();
         this.props.onFetchFullUnits();
     }
 
@@ -50,6 +52,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onFetchFullUnits: () => dispatch(fetchFullUnits()),
+        onRegisterUnits: () => registerUnits(),
     };
 }
 

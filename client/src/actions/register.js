@@ -92,3 +92,8 @@ export function logout() {
         })
     }
 }
+
+export function registerUnits() {
+    const url = '/api/register';
+    axios.post(url, {});
+}

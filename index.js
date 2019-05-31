@@ -24,10 +24,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middleware to make sure logged in
-const blockedPaths = ['/api/unit', '/api/unit*', '/api/change_password'];
+const blockedPaths = ['/api/unit', '/api/unit*', '/api/change_password', '/api/register'];
 app.use(blockedPaths, (req, res, next) => {
   if (!req.user) {
-    return res.status(404).send('Nope');
+    return res.status(404).send('Unauthorized');
   }
   next();
 })

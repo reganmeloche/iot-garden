@@ -10,8 +10,8 @@ function fetch(id) {
     return Unit.findOne({id}).then(convert);
 }
 
-function fetchAll() {
-    return Unit.find({}).then((res) => res.map(convert));
+function fetchAll(user) {
+    return Unit.find({ userId: user.userId }).then((res) => res.map(convert));
 }
 
 function fetchFull(id, startDate, endDate) {
@@ -32,8 +32,8 @@ function fetchFull(id, startDate, endDate) {
     });
 }
 
-function fetchAllFull(startDate, endDate) {
-    return fetchAll().then((units) => {
+function fetchAllFull(user, startDate, endDate) {
+    return fetchAll(user).then((units) => {
         return WaterLib.fetchAll(startDate, endDate).then(waterData => {
             return MoistureLib.fetchAll(startDate, endDate).then(moistureData => {
                 return units.map(unit => {
@@ -52,9 +52,10 @@ function fetchAllFull(startDate, endDate) {
     });
 }
 
-function save(unit) {
+function save(unit, user) {
     unit.id = uuid();
     unit.dateAdded = moment();
+    unit.userId = user.userId;
     return new Unit(unit).save().then(() => { 
         return { id: unit.id };
     });
@@ -91,12 +92,12 @@ function moisture(data) {
 
 function convert(dbUnit) {
     return {
-    id: dbUnit.id,
-    name: dbUnit.name,
-    notes: dbUnit.notes,
-    deviceData: dbUnit.deviceData,
-    pollingPeriodMinutes: dbUnit.pollingPeriodMinutes,
-    dateAdded: dbUnit.dateAdded
+        id: dbUnit.id,
+        name: dbUnit.name,
+        notes: dbUnit.notes,
+        deviceData: dbUnit.deviceData,
+        pollingPeriodMinutes: dbUnit.pollingPeriodMinutes,
+        dateAdded: dbUnit.dateAdded
     };
 }
 

@@ -26,6 +26,7 @@ const unitSchema = new Schema({
     dateAdded: Date,
     notes: String,
     pollingPeriodMinutes: Number,
+    userId: String,
     deviceData: {
         lastActive: Date,
         lastMoistureDate: Date,

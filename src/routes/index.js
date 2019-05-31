@@ -70,7 +70,7 @@ module.exports = function (app) {
 
     app.get('/api/unit', (req, res) => {
         console.log('Fetching all units...');
-        UnitLib.fetchAll().then((results) => {
+        UnitLib.fetchAll(req.user).then((results) => {
             res.status(200).send({ results });
         });
     });
@@ -89,7 +89,7 @@ module.exports = function (app) {
         console.log('Fetching all full units...');
         const startDate = req.query.start_date;
         const endDate = req.query.end_date;
-        UnitLib.fetchAllFull(startDate, endDate).then((results) => {
+        UnitLib.fetchAllFull(req.user, startDate, endDate).then((results) => {
             res.status(200).send({ results });
         });
     });
@@ -97,7 +97,7 @@ module.exports = function (app) {
 
     app.post('/api/unit', (req, res) => {
         console.log('Adding new unit...', req.body);
-        UnitLib.save(req.body).then(result => {
+        UnitLib.save(req.body, req.user).then(result => {
             res.status(201).send(result);
         });
     });
@@ -123,8 +123,9 @@ module.exports = function (app) {
     });
 
     /*** MQTT ***/
-    client.on('connect', function () {
-        UnitLib.fetchAll().then((results) => {
+    app.post('/api/register', (req, res) => {
+        console.log('Registering MQTT');
+        UnitLib.fetchAll(req.user).then((results) => {
             // it's async and in a for-loop, but order doesn't matter
             results.forEach(x => {
                 const unitId = x.id;
@@ -137,6 +138,10 @@ module.exports = function (app) {
                 });
             });
         });
+    });
+
+    client.on('connect', function () {
+        console.log('Connected to MQTT');
     });
 
     client.on('message', function (topic, message) {         
