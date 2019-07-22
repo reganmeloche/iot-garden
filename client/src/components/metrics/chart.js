@@ -43,7 +43,7 @@ class Chart extends Component {
 
     buildWaterTS = (minVal) => {
         const waterData = this.props.history.waterData;
-        const points = waterData.map(x => {
+        const points = (waterData || []).map(x => {
             return [ new Date(x.date), minVal ];
         })
 
