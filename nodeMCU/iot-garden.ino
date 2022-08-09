@@ -8,7 +8,7 @@ bool DEBUG = true;
 /*** COMMUNICATION SETUP ***/
 
 // MQTT Info: Obtained from cloudMQTT
-const char *MQTT_SERVER = "[INSERT DATA]";
+const char *MQTT_SERVER = "[INSERT DATA]"; 
 const int MQTT_PORT = -1;
 const char *MQTT_USER = "[INSERT DATA]";
 const char *MQTT_PASSWORD = "[INSERT DATA]";
