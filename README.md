@@ -8,7 +8,7 @@
 
 This is a full-stack IoT project that allows you to control your garden over the internet! It consists of a NodeMCU chip connected to a moisture sensor and a water pump. The moisture sensor is inserted into the soil of your garden, and a moisture reading is periodically taken. This data is logged to a database, which can be viewed on a dashboard. The user can activate the pump from the dashboard, so that the plants get watered. 
 
-The dashboard is a React web app generated from create-react-app, running node.js in the back-end. The database is MongoDB, hosted on mlab, and the communication between the NodeMCU chip and the dashboard server is accomplished with CloudMQTT, a hosted MQTT server.
+The dashboard is a React web app generated from create-react-app, running node.js in the back-end. The database is MongoDB, hosted on atlas, and the communication between the NodeMCU chip and the dashboard server is accomplished with CloudMQTT, a hosted MQTT server.
 
 The code that gets run on the NodeMCU is found in the nodeMCU folder. There are several libraries required to run the code, which can be found at the top of the .ino file.
 
@@ -39,11 +39,11 @@ The total cost of all the hardware is about $70 CAD.
 - Node.js (and Express): For the backend of the dashboard
 - Pond.js and react-time-series charts for displaying the data on the dashboard
 - MongoDB: For the database that stores the display messages
-- mLab: Hosting for MongoDB
+- Atlas: Hosting for MongoDB
 - Passport: For login and session management
 - Other useful npm packages: react-bootstrap, mqtt, moment, axios
 
-All of the software used in this project is free, provided you stay on the free tiers for CloudMQTT, Heroku, and mLab.
+All of the software used in this project is free, provided you stay on the free tiers for CloudMQTT, Heroku, and atlas.
 
 ## Circuit Diagram
 

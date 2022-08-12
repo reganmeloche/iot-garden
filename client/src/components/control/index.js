@@ -69,7 +69,7 @@ class Control extends Component {
                     Polling Period:
                 </span>
                 <span className="info-value">
-                    {this.props.model.pollingPeriodMinutes}
+                    {this.props.model.pollingPeriodMinutes} minutes
                 </span>
             </div>
             
