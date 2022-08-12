@@ -1,8 +1,8 @@
 # IoT Garden
 
-<img src="/pics/pic1.JPG" width="500">
+<img src="/pics/pic1.jpg" width="400">
 
-<img src="/pics/pic2.JPG" width="500">
+<img src="/pics/pic2.jpg" width="400">
 
 ## About
 
@@ -12,7 +12,7 @@ The dashboard is a React web app generated from create-react-app, running node.j
 
 The code that gets run on the NodeMCU is found in the nodeMCU folder. There are several libraries required to run the code, which can be found at the top of the .ino file.
 
-<img src="/pics/dashboard.png" width="500">
+<img src="/pics/dashboard.png" width="400">
 
 ## Technologies
 
@@ -47,9 +47,9 @@ All of the software used in this project is free, provided you stay on the free 
 
 ## Circuit Diagram
 
-<img src="/pics/diagram.JPG" width="500">
+<img src="/pics/diagram.jpg" width="400">
 
-<img src="/pics/top_view.JPG" width="500">
+<img src="/pics/top_view.jpg" width="400">
 
 ## Future Development
 - Design and 3D print some components, such as an enclosure and/or a water spout
