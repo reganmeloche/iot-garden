@@ -1,8 +1,8 @@
 # IoT Garden
 
-<img src="/pics/pic1.JPG" width="500">
+<img src="/pics/pic1.jpg" width="500">
 
-<img src="/pics/pic2.JPG" width="500">
+<img src="/pics/pic2.jpg" width="500">
 
 ## About
 
@@ -47,9 +47,9 @@ All of the software used in this project is free, provided you stay on the free 
 
 ## Circuit Diagram
 
-<img src="/pics/diagram.JPG" width="500">
+<img src="/pics/diagram.jpg" width="500">
 
-<img src="/pics/top_view.JPG" width="500">
+<img src="/pics/top_view.jpg" width="500">
 
 ## Future Development
 - Design and 3D print some components, such as an enclosure and/or a water spout
